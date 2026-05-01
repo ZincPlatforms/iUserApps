@@ -12,7 +12,7 @@ static bool connectInputManager(std::Handle* outHandle) {
         return false;
     }
 
-    for (int attempt = 0; attempt < 50; ++attempt) {
+    for (int attempt = 0; attempt < 500; ++attempt) {
         const std::Handle handle = std::service_connect(std::services::input_manager::NAME);
         if (handle != static_cast<std::Handle>(-1)) {
             *outHandle = handle;
@@ -141,9 +141,6 @@ int main() {
         if (result != static_cast<std::uint64_t>(-1)) {
             writeStr("Login successful.\n");
             if (ensureGraphicsCompositor()) {
-                if (std::spawn("/bin/desktop-shell.exe") == static_cast<std::uint64_t>(-1)) {
-                    writeStr("Failed to start desktop-shell.exe.\n");
-                }
             }
             std::yield();
             std::close(inputQueue);

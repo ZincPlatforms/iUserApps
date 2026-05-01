@@ -40,21 +40,25 @@ void write_hex(std::uint64_t value) {
 }
 
 int main() {
+    write_str("[input.manager] phase=enter\n");
     const std::Handle queue = std::event_queue_create();
     if (queue == fail) {
         write_str("[input.manager] event_queue_create failed\n");
         return 1;
     }
+    write_str("[input.manager] phase=queue-created\n");
     write_str("[input.manager] service queue handle=");
     write_hex(queue);
     write_str("\n");
 
+    write_str("[input.manager] phase=registering\n");
     if (std::service_register(std::services::input_manager::NAME, queue) == fail) {
         write_str("[input.manager] service_register failed\n");
         std::close(queue);
         return 1;
     }
 
+    write_str("[input.manager] phase=registered\n");
     write_str("[input.manager] ready\n");
 
     const std::Handle idle_queue = std::event_queue_create();
